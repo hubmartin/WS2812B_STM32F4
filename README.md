@@ -7,6 +7,7 @@ The example is implemented for STM32F4 line with TIM1 and DMA2. The DMA2 is nece
 Project is made in Atollic TrueStudio but you can compile it with any ARM-GCC. It is possible to change the code to work based on other timer or STM F1, F2 or F4 line. This version is using STM HAL library.
 
 
+
 **If you like this library, please let me know, follow me @hubmartin.**
 
 **Also subscribing to my electronics youtube channel https://www.youtube.com/user/hubmartin with practical videos and teardowns will motivate me to make more content for community. Thank you.**

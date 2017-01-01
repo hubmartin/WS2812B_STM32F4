@@ -1,6 +1,7 @@
 # LowMEM ws2812b library ( STM32F4_WS2812B )
 This is a memory and CPU efficient implementation of WS2812B library for STM32 processors. **You have to compile it with -Og or at least -O1 optimizations to take advantage of it.**
 
+
 **See my other repositories for F0 and F3 port.**
 
 The example is implemented for STM32F4 line with TIM1 and DMA2. The DMA2 is necessary because only this DMA has access to the AHB1 bus where the GPIO peripheral is located.

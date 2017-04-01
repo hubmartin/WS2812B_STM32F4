@@ -306,8 +306,14 @@ void DMA_TransferHalfHandler(DMA_HandleTypeDef *DmaHandle)
 {
 
 	// Is this the last LED?
-	if(ws2812b.repeatCounter != (WS2812B_NUMBER_OF_LEDS / 2 - 1))
-	{
+	if(ws2812b.repeatCounter == WS2812B_NUMBER_OF_LEDS)
+	 {
+
+		// If this is the last pixel, set the next pixel value to zeros, because
+		// the DMA would not stop exactly at the last bit.
+		ws2812b_set_pixel(0, 0, 0, 0, 0);
+
+	} else {
 		uint32_t i;
 
 		for( i = 0; i < WS2812_BUFFER_COUNT; i++ )
@@ -315,11 +321,10 @@ void DMA_TransferHalfHandler(DMA_HandleTypeDef *DmaHandle)
 			loadNextFramebufferData(&ws2812b.item[i], 0);
 		}
 
-	} else {
-		// If this is the last pixel, set the next pixel value to zeros, because
-		// the DMA would not stop exactly at the last bit.
-		ws2812b_set_pixel(0, 0, 0, 0, 0);
+		ws2812b.repeatCounter++;
 	}
+
+
 
 }
 
@@ -330,16 +335,13 @@ void DMA_TransferCompleteHandler(DMA_HandleTypeDef *DmaHandle)
 		LED_ORANGE_PORT->BSRR = LED_ORANGE_PIN;
 	#endif
 
-	ws2812b.repeatCounter++;
-
-	if(ws2812b.repeatCounter == WS2812B_NUMBER_OF_LEDS / 2)
+	if(ws2812b.repeatCounter == WS2812B_NUMBER_OF_LEDS)
 	{
 		// Transfer of all LEDs is done, disable DMA but enable tiemr update IRQ to stop the 50us pulse
 		ws2812b.repeatCounter = 0;
 
 		// Stop timer
 		TIM1->CR1 &= ~TIM_CR1_CEN;
-
 
 		// Disable DMA
 		__HAL_DMA_DISABLE(&dmaUpdate);
@@ -361,7 +363,6 @@ void DMA_TransferCompleteHandler(DMA_HandleTypeDef *DmaHandle)
 		TIM1->EGR = TIM_EGR_UG;
 		__HAL_TIM_CLEAR_FLAG(&TIM1_handle, TIM_FLAG_UPDATE);
 
-
 		// Enable TIM2 Update interrupt for 50us Treset signal
 		__HAL_TIM_ENABLE_IT(&TIM1_handle, TIM_IT_UPDATE);
 		// Enable timer
@@ -378,7 +379,10 @@ void DMA_TransferCompleteHandler(DMA_HandleTypeDef *DmaHandle)
 			loadNextFramebufferData(&ws2812b.item[i], 1);
 		}
 
+		ws2812b.repeatCounter++;
 	}
+
+
 
 	#if defined(LED_ORANGE_PORT)
 		LED_ORANGE_PORT->BSRR = LED_ORANGE_PIN << 16;

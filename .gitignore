@@ -1,0 +1,4 @@
+*.o
+Debug/STM32F4_WS2812B.elf
+Debug/STM32F4_WS2812B.map
+Debug/STM32F4_WS2812B.list

@@ -213,11 +213,12 @@ static void DMA2_init(void)
 
 	dmaCC2.Instance = DMA2_Stream2;
 
+	HAL_DMA_DeInit(&dmaCC2);
+
 	dmaCC2.XferCpltCallback  = DMA_TransferCompleteHandler;
 	dmaCC2.XferHalfCpltCallback = DMA_TransferHalfHandler;
 	dmaCC2.XferErrorCallback = DMA_TransferError;
 
-	HAL_DMA_DeInit(&dmaCC2);
 	HAL_DMA_Init(&dmaCC2);
 	HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 0, 0);
 	HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);

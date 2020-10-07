@@ -117,3 +117,6 @@ On the image below is in yellow waveform for WS2812B LED strip. Blue trace displ
 ## Pros and Cons
 Pros are when you use less paralel strips on the same GPIO port. You can efficiently use your RAM. But when you use more and more LED strips on the same port, the background overhead of bit-juggling takes more time and the CPU will be more busy. This applies only when you are sending data. If your update rate is 60FPS and you have plenty time between frames - you can do your CPU intensive computation between the LED transfers.
 
+## Porting
+To port this code to a different STM32 MCU, you have to check or correct the correct timer, DMA channels and streams. You can find some info here
+https://github.com/hubmartin/WS2812B_STM32F3/issues/1
